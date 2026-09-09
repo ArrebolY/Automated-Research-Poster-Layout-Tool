@@ -1,10 +1,22 @@
 # Automated Research Poster Layout Tool
 
-This repository contains a modular prototype for automatic research poster generation.
+This repository contains a modular prototype for generating editable academic posters from research paper PDFs.
 
-The system follows the pipeline below:
+The current pipeline is:
 
-`Paper PDF -> Content Understanding -> Asset Structuring -> Layout Generation -> Panel Refinement -> PPTX Poster`
+```text
+Paper PDF
+-> PDF parsing
+-> Section selection and summarization
+-> Visual asset selection
+-> Figure/table-section matching
+-> Layout generation
+-> Panel quality checking and refinement
+-> Content fitting
+-> PPTX poster export
+```
+
+The repository is intended to track the source code, tests, prompts, and lightweight validation data. Large local inputs, generated outputs, report PDFs, and experiment artifacts are ignored by Git.
 
 ## Project Structure
 
@@ -13,131 +25,222 @@ The system follows the pipeline below:
 ├── pyproject.toml
 ├── README.md
 ├── src/postergen
+│   ├── batch_eval.py
 │   ├── cli.py
 │   ├── config.py
+│   ├── evaluation.py
+│   ├── final_eval.py
 │   ├── llm.py
 │   ├── models.py
+│   ├── parser_quality.py
+│   ├── parser_validation.py
 │   ├── pipeline.py
-│   └── stages
+│   ├── prompts/
+│   └── stages/
+│       ├── asset_selection.py
 │       ├── asset_structuring.py
+│       ├── content_fitting.py
 │       ├── content_understanding.py
+│       ├── direct_llm_baseline.py
+│       ├── docling_parser.py
 │       ├── layout.py
+│       ├── panel_quality.py
 │       ├── parser.py
 │       ├── pptx_exporter.py
 │       └── refinement.py
-└── tests
-    ├── test_asset_structuring.py
-    ├── test_cli.py
-    ├── test_content_understanding.py
-    ├── test_layout.py
-    └── test_parser.py
+├── tests/
+└── validation/
+    └── parser_gold.json
 ```
 
-## Quick Start
+## Installation
 
-1. Create a virtual environment and install dependencies.
-   Install the Docling extra to enable the preferred PDF parser:
+Create a virtual environment and install the package:
+
+```bash
+pip install -e .
+```
+
+For development and tests:
+
+```bash
+pip install -e '.[dev]'
+```
+
+To enable the preferred Docling-based PDF parser:
 
 ```bash
 pip install -e '.[docling]'
 ```
 
-Without this extra, the pipeline automatically uses the legacy PyMuPDF parser.
+Without the Docling extra, the pipeline falls back to the legacy PyMuPDF/pdfplumber parser.
 
-2. Run the pipeline:
+## Quick Start
+
+Run the pipeline on a local PDF:
 
 ```bash
-python -m postergen.cli materials/paper/P2P.pdf --output outputs/poster.pptx
+postergen path/to/paper.pdf --output outputs/poster.pptx
 ```
 
-This default command uses the offline rule-based baseline. It does not require an API key.
+The same command can also be run as a Python module:
 
-To run with an LLM-backed summarizer, set the provider API key and pass the provider/model:
+```bash
+python -m postergen.cli path/to/paper.pdf --output outputs/poster.pptx
+```
+
+By default, the CLI uses `--llm-provider rule` and `--experiment-mode proposed`. This runs the modular pipeline with rule-based/offline fallbacks where no LLM is configured.
+
+## LLM-backed Generation
+
+The CLI supports `rule`, `openai`, `deepseek`, `openrouter`, and `gemini` providers.
+
+Example with DeepSeek:
 
 ```bash
 export DEEPSEEK_API_KEY=...
-python -m postergen.cli materials/paper/P2P.pdf \
+postergen path/to/paper.pdf \
   --output outputs/poster_deepseek.pptx \
   --llm-provider deepseek \
   --llm-model deepseek-v4-flash
 ```
 
+Example with OpenAI:
+
 ```bash
 export OPENAI_API_KEY=...
-python -m postergen.cli materials/paper/P2P.pdf \
+postergen path/to/paper.pdf \
   --output outputs/poster_openai.pptx \
   --llm-provider openai \
-  --llm-model gpt-5.4-mini
+  --llm-model gpt-4o-mini
 ```
 
-```bash
-export GEMINI_API_KEY=...
-python -m postergen.cli materials/paper/P2P.pdf \
-  --output outputs/poster_gemini.pptx \
-  --llm-provider gemini \
-  --llm-model gemini-3.1-flash-lite
-```
-
-OpenAI-compatible proxy providers can be used through OpenRouter:
+For providers using a non-default environment variable or base URL:
 
 ```bash
-export OPENROUTER_API_KEY=...
-python -m postergen.cli materials/paper/P2P.pdf \
+postergen path/to/paper.pdf \
   --output outputs/poster_openrouter.pptx \
   --llm-provider openrouter \
-  --llm-model deepseek/deepseek-v4-flash
+  --llm-model deepseek/deepseek-v4-flash \
+  --llm-api-key-env OPENROUTER_API_KEY
+```
+
+## Experiment Modes
+
+The main CLI supports the following experiment modes:
+
+- `proposed`
+- `direct_llm`
+- `template_based`
+- `without_semantic_figure_matching`
+- `without_llm_figure_description`
+- `without_panel_refinement`
+- `template_layout_only`
+
+Example:
+
+```bash
+postergen path/to/paper.pdf \
+  --output outputs/template_based_poster.pptx \
+  --experiment-mode template_based
+```
+
+For `direct_llm`, use an LLM provider. The output path may use `.html` if you want to save the direct HTML poster:
+
+```bash
+postergen path/to/paper.pdf \
+  --output outputs/direct_llm_poster.html \
+  --experiment-mode direct_llm \
+  --llm-provider deepseek \
+  --llm-model deepseek-v4-flash
 ```
 
 ## Current Capabilities
 
 The pipeline currently includes:
 
-- data models for paper, sections, figures, panels, and layout
-- PDF text, section, caption, and image extraction with `PyMuPDF`
-- table detection and table-cell extraction with `pdfplumber`
-- offline rule-based section summarization
-- optional LLM-backed section selection and section summarization
-- figure/table-section alignment by explicit references and keyword fallback
-- recursive binary layout generation
-- editable PPTX export with panels, bullet text, images, figure captions, and table captions
+- Docling-based PDF parsing with fallback to the legacy PyMuPDF/pdfplumber parser
+- extraction of paper title, abstract, sections, figures, tables, captions, and Markdown text
+- parser quality reports written to `outputs/assets/<pdf_stem>/parser_quality.json`
+- section selection and poster-oriented summarization
+- visual asset description, filtering, and suitability scoring
+- figure/table-section matching using explicit references and semantic signals
+- caption rewriting for poster presentation when an LLM is configured
+- recursive tree-based layout generation and template-based layout modes
+- panel quality checking for overflow, blank space, small visual assets, and bounds issues
+- local panel refinement and content fitting
+- editable PPTX export with native text boxes, panel shapes, images, and captions
+- direct LLM HTML baseline generation for comparison experiments
+- module-level and final evaluation scripts
 
-The active parser uses Docling's `DocumentConverter` and `PdfPipelineOptions`, exports the parsed
-document to Markdown, and saves figure and table images under `outputs/assets/<pdf_stem>/`. A
-`parser_quality.json` report is written in the same folder. If Docling is unavailable or conversion
-fails, the existing PyMuPDF parser is used automatically and the fallback reason appears in the report.
+Intermediate reports are written under `outputs/assets/<pdf_stem>/`, including files such as:
 
-After section selection and summarisation, the asset-selection stage filters the extracted figures and
-tables before section matching. It uses explicit references, caption relevance, and asset availability
-for the offline rule baseline, or the configured LLM when available. The selected IDs, scores, reasons,
-and rejected candidates are recorded in `outputs/assets/<pdf_stem>/asset_selection.json`.
+- `paper.md`
+- `experiment_config.json`
+- `section_selection.json`
+- `asset_selection.json`
+- `asset_matching.json`
+- `layout_quality.json`
+- `panel_quality.json`
+- `content_fitting.json`
+- `refinement_history.json`
+- `module_eval.json`
 
-Section selection rejects short overview headings when substantive sections are available, preserves
-coverage of the problem, core method, main results, and conclusion, and checks generated bullets for
-unsupported numbers or weak source grounding. These checks and any automatic adjustments are recorded
-in `section_selection.json`. Figure/table matching ignores caption-only references, applies semantic
-relevance thresholds and role compatibility, and records assignments in `asset_matching.json`.
+## Evaluation
 
-When an LLM is configured, section selection returns structured section IDs, poster roles, and reasons.
-Asset matching also uses a structured LLM planner that assigns selected figures/tables to section IDs;
-all IDs, duplicate use, per-section limits, explicit references, and semantic relevance are validated
-before the assignment is accepted. The rule matcher remains the offline baseline and automatic fallback.
-The versioned prompt templates live under `src/postergen/prompts/`.
+Run module-level evaluation on existing reports:
 
-## PDF Parser Validation
+```bash
+postergen-evaluate --reports-root outputs/assets
+```
 
-Run the lightweight validation checklist on the representative research papers:
+Run generation and module-level evaluation for a directory or fixed list of PDFs:
+
+```bash
+postergen-evaluate \
+  --run-pipeline \
+  --paper-list path/to/paper_list.txt \
+  --experiment-mode proposed \
+  --llm-provider deepseek \
+  --llm-model deepseek-v4-flash
+```
+
+Run the final evaluation protocol:
+
+```bash
+postergen-final-evaluate \
+  --paper-list path/to/paper_list.txt \
+  --reports-root outputs/assets
+```
+
+The final evaluator supports PaperQuiz-style QA, faithfulness checks, rule-based visual readability checks, and optional OpenAI VLM-as-judge evaluation.
+
+## Parser Validation
+
+Run the lightweight parser validation checklist:
+
+```bash
+postergen-validate-parser
+```
+
+or:
 
 ```bash
 python -m postergen.parser_validation
 ```
 
-The report includes normalized title accuracy, section precision/recall/F1, section-level accuracy,
-required-body sanity checks, figure/table recall, and caption completeness. The checklist lives at
-`validation/parser_gold.json`; it is a small functional validation set, not a parser training dataset.
+The checklist lives at `validation/parser_gold.json`. It is a small functional validation set, not a parser training dataset.
 
-## Planned Extensions
+## Tests
 
-- add figure image summarization for multimodal LLMs
-- improve image-caption binding using PDF layout coordinates
-- add embedding-based semantic figure-section matching
-- add evaluation scripts for PaperQuiz, fidelity scoring, and VLM-based judging
+After installing the development extra, run:
+
+```bash
+python -m pytest -q
+```
+
+## Notes
+
+- `outputs/` is ignored because it contains generated posters, extracted assets, and evaluation artifacts.
+- `materials/` is ignored because local paper PDFs and report materials can be large or private.
+- Report PDFs, LaTeX report files, and local figure folders are not part of the published code repository.
