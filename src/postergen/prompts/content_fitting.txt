@@ -1,0 +1,34 @@
+Adjust one academic-poster panel so its text fits the available space.
+
+Action: {{ACTION}}
+Action reason: {{ACTION_REASON}}
+Section title: {{SECTION_TITLE}}
+Target total body length: approximately {{TARGET_WORDS}} words.
+Allowed bullet count: {{MIN_BULLETS}} to {{MAX_BULLETS}}.
+
+Rules:
+- Use only facts from the supplied source section.
+- Preserve important numerical values exactly.
+- Use the priority facts as a guide to preserve answer-bearing details such as datasets, model names, metrics, theorem names, and key numerical results.
+- For expand, retain useful existing points and add distinct evidence or detail from the source until the panel is closer to the target length.
+- For expand, add missing priority facts before adding generic explanation.
+- If expand is requested because of unused space, do not return the original text unchanged unless the source has no additional grounded information.
+- For compress, preserve the central contribution or finding and remove secondary detail.
+- For compress, prefer removing generic background before removing priority facts.
+- Do not repeat information already covered by the other poster panels.
+- Each bullet must be one concise sentence, normally under 24 words.
+- Do not use ellipses ("...") or unfinished sentences.
+- Every bullet must be grammatically complete and end with a normal period, question mark, or exclamation mark.
+- Return bullets only, one per line, beginning with "- ".
+
+Current panel text:
+{{CURRENT_TEXT}}
+
+Other panel text to avoid repeating:
+{{OTHER_PANEL_TEXT}}
+
+Priority facts to preserve when possible:
+{{KEY_FACTS}}
+
+Source section:
+{{SOURCE_TEXT}}

@@ -1,0 +1,17 @@
+Generate a concise semantic description for a research-paper {{ASSET_TYPE}}.
+
+Asset id: {{ASSET_ID}}
+
+Original caption:
+{{CAPTION}}
+
+Nearby/relevant paper context:
+{{CONTEXT}}
+
+Rules:
+- Use only information supported by the caption or provided context.
+- Explain the role of this visual in the paper, not just what it looks like.
+- Mention whether it represents a method/framework, dataset/example, experimental result, comparison, ablation, or conclusion when clear.
+- Keep it to one complete sentence of 12 to 32 words.
+- Do not invent numbers, datasets, methods, or conclusions.
+- Do not include markdown, JSON, citations, or extra commentary.

@@ -1,0 +1,25 @@
+Summarize the supplied research-paper section for an academic poster.
+
+Section title: {{SECTION_TITLE}}
+Write {{MIN_BULLETS}} to {{MAX_BULLETS}} concise bullet points.
+
+Potentially important details extracted from this section:
+{{KEY_DETAILS}}
+
+Rules:
+- Focus on the contribution, method, data, evidence, finding, or conclusion actually present in this section.
+- Use only information from the supplied section text.
+- Preserve numerical values exactly as written.
+- When useful, include one or two concrete details from the extracted detail list, such as dataset names, model names, metrics, theorem names, or key values.
+- For method sections, prefer components, workflow steps, algorithms, or model names.
+- For experiment/result sections, prefer datasets, metrics, compared methods, best-performing methods, and key numerical findings.
+- For introduction/conclusion sections, prefer the research gap, main contribution, and final takeaway.
+- Prefer specific poster statements over generic claims like "the method is effective" or "experiments are conducted".
+- Do not introduce facts, datasets, models, or claims from other sections or external knowledge.
+- If there is insufficient information, return fewer grounded bullets instead of inventing content.
+- Each bullet must be one sentence and under 24 words.
+- Do not use ellipses ("...") or unfinished sentences.
+- Return bullets only, one per line, beginning with "- ".
+
+Section text:
+{{SECTION_TEXT}}

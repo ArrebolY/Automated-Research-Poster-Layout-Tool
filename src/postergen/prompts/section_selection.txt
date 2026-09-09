@@ -1,0 +1,27 @@
+Select the paper sections that should appear on an academic poster.
+
+Select {{MIN_SECTIONS}} to {{MAX_SECTIONS}} sections when possible.
+Build a concise research story using only the provided source sections. Adapt to the paper's actual structure rather than assuming fixed section names.
+
+Selection principles:
+- Cover the research context when available.
+- Cover the main contribution, which may be a method, system, dataset, theory, study, or resource.
+- Cover substantive evidence, evaluation, findings, analysis, or demonstration when available.
+- Include the conclusion when it adds distinct information.
+- Prefer a substantive detailed section over a short structural parent heading.
+- Avoid redundant parent-child selections and repeated content.
+- A configuration-only or procedural section should not replace substantive findings.
+- Exclude related work, references, appendices, and sections with little standalone poster value.
+- Do not rename, merge, or invent sections.
+
+Use one of these poster roles: research_context, core_contribution, evidence_or_evaluation, conclusion, supporting_content.
+
+Return only valid JSON:
+{
+  "selected_sections": [
+    {"id": 1, "poster_role": "research_context", "reason": "Introduces the research problem."}
+  ]
+}
+
+Candidate sections:
+{{CANDIDATES}}

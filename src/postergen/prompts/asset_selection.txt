@@ -1,0 +1,29 @@
+Select the figures and tables that are most useful for the currently selected academic-poster sections.
+
+Keep assets that directly explain a contribution, method, dataset, evaluation, demonstration, or key finding. Exclude logos, decorative images, redundant assets, appendix/supplementary-only materials, and assets that cannot support any selected section.
+
+Choose assets for a single-page academic poster, not for a full paper reproduction:
+- Prefer readable method diagrams, framework overviews, dataset overviews, key result charts, compact comparison tables, and qualitative examples.
+- Prefer a readable overview or result figure over a very dense table.
+- Select a table with more than 20 rows only when it contains indispensable evidence and no clearer visual communicates the same finding.
+- Avoid selecting several visually similar tables unless they support distinct core claims.
+- For each selected asset, infer a broad role such as method_diagram, main_result, comparison_table, dataset_overview, qualitative_example, ablation_table, dense_table, or motivation_figure.
+- When a description or representation is provided, use it together with the original caption to judge the asset's semantic role.
+
+Select at most {{MAX_TOTAL}} assets in total, including at most {{MAX_FIGURES}} figures and {{MAX_TABLES}} tables. Use only exact IDs from the input.
+
+Return only valid JSON:
+{
+  "selected_assets": [
+    {"type": "figure", "id": "Figure 1", "role": "method_diagram", "reason": "Explains the proposed architecture and is readable as a poster visual."}
+  ]
+}
+
+Poster sections:
+{{SECTIONS}}
+
+Figures:
+{{FIGURES}}
+
+Tables:
+{{TABLES}}

@@ -1,0 +1,79 @@
+{
+  "description": "Lightweight validation checklist for born-digital English research papers.",
+  "documents": [
+    {
+      "file": "materials/paper/P2P.pdf",
+      "title": "P2P: Automated Paper-to-Poster Generation and Fine-Grained Benchmark",
+      "sections": [
+        {"title": "Introduction", "level": 1},
+        {"title": "Methodology", "level": 1},
+        {"title": "P2P: Multi-agent for Paper-to-Poster Generation", "level": 2},
+        {"title": "P2PEVAL: A Fine-grained Benchmark for Poster Evaluation", "level": 1},
+        {"title": "Benchmark Constructing", "level": 2},
+        {"title": "Poster Evaluation Framework", "level": 2},
+        {"title": "Universal Poster Evaluation", "level": 3},
+        {"title": "Fine-Grained Poster Evaluation", "level": 3},
+        {"title": "Experiments and Analysis", "level": 1, "body_required": false},
+        {"title": "Experimental Setup", "level": 2},
+        {"title": "Evaluation Metrics", "level": 2},
+        {"title": "Results and Analysis", "level": 2},
+        {"title": "Related Work", "level": 1},
+        {"title": "Conclusion", "level": 1}
+      ],
+      "figure_ids": ["Figure 1", "Figure 2", "Figure 3", "Figure 4", "Figure 5", "Figure 6"],
+      "table_ids": ["Table 1", "Table 2", "Table 3", "Table 4", "Table 5"]
+    },
+    {
+      "file": "materials/paper/Paper2Poster.pdf",
+      "title": "Paper2Poster: Towards Multimodal Poster Automation from Scientific Papers",
+      "sections": [
+        {"title": "Introduction", "level": 1},
+        {"title": "Related Work", "level": 1, "body_required": false},
+        {"title": "Visual Design Automation", "level": 2},
+        {"title": "Vision-Language Agents", "level": 2},
+        {"title": "Paper2Poster Benchmark", "level": 1, "body_required": false},
+        {"title": "Task Definition", "level": 2},
+        {"title": "Data Curation", "level": 2},
+        {"title": "Evaluation Metrics", "level": 2},
+        {"title": "PosterAgent", "level": 1},
+        {"title": "Parser: global organization", "level": 2},
+        {"title": "Planner: local organization", "level": 2},
+        {"title": "Painter-Commenter: local refinement", "level": 2},
+        {"title": "Experiments", "level": 1, "body_required": false},
+        {"title": "Baselines and Settings", "level": 2},
+        {"title": "Main Results", "level": 2},
+        {"title": "Qualitative Analysis", "level": 2},
+        {"title": "Efficiency Analysis", "level": 2},
+        {"title": "Conclusions", "level": 1}
+      ],
+      "figure_ids": ["Figure 1", "Figure 2", "Figure 3", "Figure 4", "Figure 5", "Figure 6", "Figure 7", "Figure 8", "Figure 9", "Figure 10", "Figure 11", "Figure 12", "Figure 13", "Figure 14", "Figure 15", "Figure 16", "Figure 17", "Figure 18", "Figure 19", "Figure 20", "Figure 21", "Figure 22", "Figure 23", "Figure 24", "Figure 25", "Figure 26", "Figure 27", "Figure 28", "Figure 29"],
+      "table_ids": ["Table 1", "Table 2", "Table 3", "Table 4", "Table 5", "Table 6", "Table 7", "Table 8", "Table 9", "Table 10", "Table 11"]
+    },
+    {
+      "file": "materials/paper/T0-PosterBot.pdf",
+      "title": "PosterBot: A System for Generating Posters of Scientific Papers with Neural Models",
+      "sections": [
+        {"title": "Introduction", "level": 1},
+        {"title": "System Overview", "level": 1},
+        {"title": "Demonstration", "level": 1},
+        {"title": "Conclusion", "level": 1}
+      ],
+      "figure_ids": ["Figure 1", "Figure 2", "Figure 3"],
+      "table_ids": []
+    },
+    {
+      "file": "materials/paper/T0-Learning to Generate Posters of Scientific Papers.pdf",
+      "title": "Learning to Generate Posters of Scientific Papers",
+      "sections": [
+        {"title": "Introduction", "level": 1},
+        {"title": "Related Work", "level": 1},
+        {"title": "Overview", "level": 1},
+        {"title": "Methodology", "level": 1},
+        {"title": "Experimental Results", "level": 1},
+        {"title": "Conclusion and Future Work", "level": 1}
+      ],
+      "figure_ids": ["Figure 1", "Figure 2", "Figure 3", "Figure 4"],
+      "table_ids": ["Table 1", "Table 2"]
+    }
+  ]
+}

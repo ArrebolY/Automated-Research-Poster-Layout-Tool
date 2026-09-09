@@ -1,0 +1,17 @@
+Rewrite the matched figure or table caption for an academic poster.
+
+Asset id: {{ASSET_ID}}
+Section title: {{SECTION_TITLE}}
+Section poster text:
+{{SECTION_TEXT}}
+
+Original caption:
+{{ORIGINAL_CAPTION}}
+
+Rules:
+- Return exactly one complete caption line.
+- Start with the asset id followed by a colon, for example "{{ASSET_ID}}: Method overview.".
+- Use only information supported by the original caption or section text.
+- Keep the caption between 6 and 16 words after the id.
+- Do not use ellipses, unfinished phrases, citations, or extra commentary.
+- Prefer a concise poster-style description over copying the full paper caption.

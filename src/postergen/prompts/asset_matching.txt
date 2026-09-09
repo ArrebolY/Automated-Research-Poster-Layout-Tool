@@ -1,0 +1,25 @@
+Assign selected figures and tables to the most relevant academic-poster sections.
+
+Rules:
+- Use only exact section IDs and asset IDs from the input.
+- Assign an asset only when it clearly supports that section.
+- Prefer a genuine in-text reference when provided; otherwise use caption-to-section semantic relevance.
+- Respect section roles: Introduction usually needs motivation/overview visuals; Method needs framework/pipeline/model diagrams; Results/Evaluation need key result charts or compact result tables; Dataset sections need dataset/example overviews; Conclusion usually does not need a visual unless the asset summarizes the whole contribution.
+- Avoid assigning dense tables to non-result sections.
+- A figure or table may be assigned at most once.
+- Assign at most one figure and one table to each section.
+- It is valid to leave an asset or section unassigned.
+- Do not generate layout coordinates or rewrite section content.
+
+Return only valid JSON:
+{
+  "assignments": [
+    {"section_id": 2, "asset_type": "figure", "asset_id": "Figure 1", "reason": "Illustrates the method described in this section."}
+  ]
+}
+
+Poster sections:
+{{SECTIONS}}
+
+Selected assets:
+{{ASSETS}}

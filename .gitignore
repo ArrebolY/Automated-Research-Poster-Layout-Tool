@@ -1,0 +1,19 @@
+__pycache__/
+.pytest_cache/
+.venv/
+*.pyc
+*.egg-info/
+.DS_Store
+tmp/
+outputs/
+materials/
+meeting.html
+meeting.md
+figures/ChatGPT Image*.png
+*.pdf
+*.zip
+*.log
+*.aux
+*.out
+*.toc
+*.synctex.gz
