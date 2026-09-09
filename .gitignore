@@ -10,6 +10,10 @@ materials/
 meeting.html
 meeting.md
 figures/ChatGPT Image*.png
+figures/
+img/
+final_report_author_citations.tex
+references_author_citations.bib
 *.pdf
 *.zip
 *.log
